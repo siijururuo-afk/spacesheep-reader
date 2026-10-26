@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="슝的聊天记录，中韩对照，按时间顺序阅读。">
+  <title>슝 · 聊天存档</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' rx='18' fill='black'/%3E%3Ctext x='40' y='55' font-size='49' text-anchor='middle' fill='white'%3E슝%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#reading">跳到聊天记录</a>
+  <aside class="sidebar" aria-label="日期目录">
+    <a class="brand" href="#top"><span class="brand-mark">슝</span><span>聊天存档<small>SPACESHEEP ARCHIVE</small></span></a>
+    <p class="nav-caption">按日阅读 <span>2026</span></p>
+    <nav id="dates"></nav>
+    <div class="sidebar-bottom"><a href="聊天记录_中韩对照.md" download>下载中韩对照 ↗</a><a href="https://www.spacesheep.co.kr/askbox/wAbN1ARBm8npJ5qIETukH" target="_blank" rel="noopener noreferrer">原始聊天页面 ↗</a><p>把散落的对话，慢慢读完。</p></div>
+  </aside>
+  <div class="page" id="top">
+    <header class="masthead"><span>阅读收藏 · 韩中对照</span><a id="resume" href="#reading" hidden>继续上次阅读 ↓</a></header>
+    <section class="intro">
+      <p class="eyebrow">THE CONVERSATION COLLECTION</p>
+      <h1>슝的聊天手记<span>一些对话，一些日常。</span></h1>
+      <p class="lead">从第一句到最后一句，按时间收录。<br>保留原本的语气，也留一份可以随时对照的韩文。</p>
+      <div class="stats"><span><strong>1,720</strong>条消息</span><span><strong>6</strong>个聊天日</span><span class="range">2026.05.14 — 2026.10.26</span></div>
+    </section>
+    <section class="toolbar" aria-label="阅读设置">
+      <label class="search"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg><input id="search" type="search" placeholder="搜索中文、韩文或链接" aria-label="搜索聊天记录"><kbd>/</kbd></label>
+      <div class="tools"><div class="modes" role="group" aria-label="显示语言"><button data-mode="zh" aria-pressed="true">中文</button><button data-mode="both" aria-pressed="false">中韩对照</button><button data-mode="ko" aria-pressed="false">韩文</button></div><div class="type-size"><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="放大字号">A＋</button></div></div>
+    </section>
+    <div class="reading-meta"><p id="result" aria-live="polite"></p><label class="media-filter"><input id="media-only" type="checkbox">只看图片与链接</label></div>
+    <main id="reading" tabindex="-1"><div id="messages"></div><p id="empty" hidden>没有找到匹配的消息。试试其他词，或取消筛选。</p></main>
+    <footer class="footer"><span class="end-mark">✳</span><p>读到这里，暂时告一段落。</p><small>译文由 AI 整理，俚语、人名及同人用语可能存在歧义，可展开韩文核对。<br>时间均为韩国时间（UTC+9）；匿名访客标签可能对应不同的人。<br>4 条涉及幼龄角色性化表述的消息保留编号，以说明替代具体内容。<br>图片保留原貌，图片内文字未另行翻译。外部内容以原站可用情况为准。</small><a href="#top">回到开头 ↑</a></footer>
+  </div>
+  <button class="back-top" aria-label="回到顶部" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <dialog id="lightbox"><button id="close-lightbox" aria-label="关闭图片">×</button><img alt="聊天图片放大预览"><a target="_blank" rel="noopener noreferrer">打开原图 ↗</a></dialog>
+</body>
+</html>
