@@ -4,11 +4,11 @@
   const data=window.ARCHIVE, $=s=>document.querySelector(s);
   if(!data){$('#messages').textContent='记录文件加载失败，请确认 data.js 与本页面位于同一目录。';return;}
   const days=[...new Set(data.messages.map(m=>m.date))], names=['日','一','二','三','四','五','六'];
-  let mode='zh',size=17,query='',mediaOnly=false;
+  let mode='zh',size=14,query='',mediaOnly=false;
   const readStore=(k,f)=>{try{return localStorage.getItem(k)||f}catch{return f}};
   const save=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
   mode=readStore('spacesheep-mode','zh');if(!['zh','ko','both'].includes(mode))mode='zh';
-  size=Number(readStore('spacesheep-size','17'));if(!Number.isFinite(size))size=17;size=Math.max(14,Math.min(23,size));
+  size=Number(readStore('spacesheep-size-v2','14'));if(!Number.isFinite(size))size=14;size=Math.max(12,Math.min(20,size));
   const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n};
   const safeUrl=s=>{try{let u=new URL(s);return ['http:','https:'].includes(u.protocol)?u:null}catch{return null}};
   const urls=s=>[...new Set((s||'').match(/https?:\/\/[^\s<>"\u201c\u201d]+/g)||[])].map(s=>s.replace(/[),.，。]+$/,'')).filter(s=>safeUrl(s));
@@ -28,10 +28,12 @@
     }
   }
   function message(m){const a=el('article','message');a.id=`m${m.seq}`;a.dataset.seq=m.seq;
+    a.classList.toggle('from-owner',m.isOwner);
     const meta=el('div','message-meta'),speaker=el('span',`speaker${m.isOwner?' owner':''}`,m.speaker),t=el('time','',m.time),id=el('a','message-number',`#${String(m.seq).padStart(4,'0')} ↗`);t.dateTime=m.iso;id.href=`#m${m.seq}`;id.title='这条消息的永久链接';meta.append(speaker,t,id);a.append(meta);
-    if(mode==='ko'){if(m.quote)a.append(quote(m.quote));if(m.text)a.append(body(m.text));}
-    else{if(m.quote)a.append(quote(m.quoteZh));if(m.text)a.append(body(m.zh));if(m.text||m.quote)a.append(original(m));}
-    media(m,a);return a;
+    const bubble=el('div','bubble');a.append(bubble);
+    if(mode==='ko'){if(m.quote)bubble.append(quote(m.quote));if(m.text)bubble.append(body(m.text));}
+    else{if(m.quote)bubble.append(quote(m.quoteZh));if(m.text)bubble.append(body(m.zh));if(m.text||m.quote)bubble.append(original(m));}
+    media(m,bubble);return a;
   }
   function matches(m){return(!mediaOnly||m.images.length||urls(m.text+' '+m.quote).length)&&(!query||[m.text,m.zh,m.quote,m.quoteZh,m.speaker,m.date].join('\n').toLocaleLowerCase().includes(query));}
   function render(){const root=$('#messages');const filtered=data.messages.filter(matches),frag=document.createDocumentFragment();let section,date;
@@ -46,7 +48,7 @@
   let debounce;$('#search').addEventListener('input',e=>{clearTimeout(debounce);debounce=setTimeout(()=>{query=e.target.value.trim().toLocaleLowerCase();render()},180)});
   $('#media-only').addEventListener('change',e=>{mediaOnly=e.target.checked;render()});
   document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{const visible=[...document.querySelectorAll('.message')].find(x=>x.getBoundingClientRect().bottom>145),seq=visible?.id,offset=visible?.getBoundingClientRect().top;mode=b.dataset.mode;save('spacesheep-mode',mode);render();if(seq){const target=document.getElementById(seq);window.scrollBy({top:target.getBoundingClientRect().top-offset,behavior:'instant'})}}));
-  const applySize=()=>{document.documentElement.style.setProperty('--body-size',`${size}px`);$('#smaller').disabled=size<=14;$('#larger').disabled=size>=23;save('spacesheep-size',String(size))};$('#smaller').onclick=()=>{size=Math.max(14,size-1);applySize()};$('#larger').onclick=()=>{size=Math.min(23,size+1);applySize()};
+  const applySize=()=>{document.documentElement.style.setProperty('--body-size',`${size}px`);$('#smaller').disabled=size<=12;$('#larger').disabled=size>=20;save('spacesheep-size-v2',String(size))};$('#smaller').onclick=()=>{size=Math.max(12,size-1);applySize()};$('#larger').onclick=()=>{size=Math.min(20,size+1);applySize()};
   document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();$('#search').focus()}});
   $('#close-lightbox').onclick=()=>$('#lightbox').close();$('#lightbox').addEventListener('click',e=>{if(e.target===$('#lightbox'))$('#lightbox').close()});
   const previous=readStore('spacesheep-position','');
